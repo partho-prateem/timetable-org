@@ -25,5 +25,11 @@ export function createServer() {
     return mod.aiSuggest(req, res, next as any);
   });
 
+  // Backwards-compatible endpoint expected by the frontend
+  app.post("/timetable/suggestions", async (req, res, next) => {
+    const mod = await import("./routes/ai-suggest");
+    return mod.aiSuggest(req, res, next as any);
+  });
+
   return app;
 }
