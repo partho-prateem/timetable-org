@@ -65,7 +65,7 @@ export function getConflictPairs(items: Session[]) {
   return pairs;
 }
 
-export function TimetableGrid({ items, onChange }: { items: Session[]; onChange: (updated: Session[]) => void }) {
+export function TimetableGrid({ items, onChange, changedIds }: { items: Session[]; onChange: (updated: Session[]) => void; changedIds?: Set<string> }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
   const activeItem = useMemo(() => items.find((i) => i.id === activeId) ?? null, [activeId, items]);
@@ -96,10 +96,10 @@ export function TimetableGrid({ items, onChange }: { items: Session[]; onChange:
           </div>
         ))}
         {HOURS.map((h) => (
-          <Row key={h} hour={h} items={items} conflicts={conflicts} />
+          <Row key={h} hour={h} items={items} conflicts={conflicts} changedIds={changedIds} />
         ))}
       </div>
-      <DragOverlay>{activeItem ? <SessionCard s={activeItem} dragging /> : null}</DragOverlay>
+      <DragOverlay>{activeItem ? <SessionCard s={activeItem} dragging conflicted={conflicts.has(activeItem.id)} changed={changedIds?.has(activeItem.id)} /> : null}</DragOverlay>
     </DndContext>
   );
 }
