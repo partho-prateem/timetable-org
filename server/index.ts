@@ -19,5 +19,8 @@ export function createServer() {
 
   app.get("/api/demo", handleDemo);
 
+  // AI suggestions
+  app.post("/api/ai/suggest", (await import("./routes/ai-suggest")).aiSuggest);
+
   return app;
 }
