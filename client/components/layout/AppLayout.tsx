@@ -19,7 +19,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/providers/AuthProvider";
-import { BookOpen, CalendarDays, GraduationCap, Home, LayoutGrid, PanelsTopLeft, Users, UsersRound } from "lucide-react";
+import {
+  BookOpen,
+  CalendarDays,
+  GraduationCap,
+  Home,
+  LayoutGrid,
+  PanelsTopLeft,
+  Users,
+  UsersRound,
+} from "lucide-react";
 
 const nav = [
   { to: "/dashboard", label: "Dashboard", icon: Home },
@@ -53,7 +62,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
               <SidebarMenu>
                 {nav.map((n) => (
                   <SidebarMenuItem key={n.to}>
-                    <SidebarMenuButton asChild isActive={location.pathname.startsWith(n.to)}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname.startsWith(n.to)}
+                    >
                       <NavLink to={n.to} className="flex items-center gap-2">
                         <n.icon className="size-4" />
                         <span>{n.label}</span>
@@ -66,15 +78,25 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <div className="px-2 text-xs text-muted-foreground">{user?.email ?? "Guest"}</div>
-          <Button variant="secondary" className="w-full" onClick={() => signOut()}>Sign out</Button>
+          <div className="px-2 text-xs text-muted-foreground">
+            {user?.email ?? "Guest"}
+          </div>
+          <Button
+            variant="secondary"
+            className="w-full"
+            onClick={() => signOut()}
+          >
+            Sign out
+          </Button>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-10 flex h-14 items-center gap-2 border-b bg-background px-4">
           <SidebarTrigger />
           <div className="font-semibold">Timetable Scheduling Platform</div>
-          <div className="ml-auto text-sm text-muted-foreground">{user?.email ?? "Not signed in"}</div>
+          <div className="ml-auto text-sm text-muted-foreground">
+            {user?.email ?? "Not signed in"}
+          </div>
         </header>
         <div className="p-6">{children}</div>
       </SidebarInset>
@@ -82,7 +104,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
   );
 }
 
-export function PageTitle({ title, description }: { title: string; description?: string }) {
+export function PageTitle({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
   return (
     <div className="mb-6">
       <h1 className="text-2xl font-bold tracking-tight">{title}</h1>

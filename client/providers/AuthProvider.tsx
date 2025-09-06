@@ -1,10 +1,20 @@
-import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export type AuthContextType = {
   user: any | null;
   loading: boolean;
-  signInWithPassword: (email: string, password: string) => Promise<{ error?: string }>;
+  signInWithPassword: (
+    email: string,
+    password: string,
+  ) => Promise<{ error?: string }>;
   signOut: () => Promise<void>;
   configured: boolean;
 };
@@ -24,9 +34,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       const { data } = await supabase.auth.getSession();
       if (!ignore) setUser(data.session?.user ?? null);
-      const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
-        setUser(session?.user ?? null);
-      });
+      const { data: sub } = supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          setUser(session?.user ?? null);
+        },
+      );
       setLoading(false);
       return () => sub.subscription.unsubscribe();
     };
@@ -42,8 +54,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       loading,
       configured: isSupabaseConfigured,
       signInWithPassword: async (email, password) => {
-        if (!isSupabaseConfigured || !supabase) return { error: "Supabase not configured" };
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (!isSupabaseConfigured || !supabase)
+          return { error: "Supabase not configured" };
+        const { error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
         return error ? { error: error.message } : {};
       },
       signOut: async () => {

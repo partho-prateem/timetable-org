@@ -1,6 +1,13 @@
 import { AppLayout, PageTitle } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const rows = [
   { id: "2025-CSE-A", name: "CSE Batch A (2025)" },

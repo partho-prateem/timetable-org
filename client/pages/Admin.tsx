@@ -1,14 +1,36 @@
 import { AppLayout, PageTitle } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
-interface PendingItem { id: string; owner: string; title: string; submittedAt: string }
+interface PendingItem {
+  id: string;
+  owner: string;
+  title: string;
+  submittedAt: string;
+}
 
 const initial: PendingItem[] = [
-  { id: "tt-001", owner: "2025-CSE-A", title: "Sem 5 Draft", submittedAt: "2025-09-01" },
-  { id: "tt-002", owner: "2025-ECE-A", title: "Sem 5 Draft", submittedAt: "2025-09-02" },
+  {
+    id: "tt-001",
+    owner: "2025-CSE-A",
+    title: "Sem 5 Draft",
+    submittedAt: "2025-09-01",
+  },
+  {
+    id: "tt-002",
+    owner: "2025-ECE-A",
+    title: "Sem 5 Draft",
+    submittedAt: "2025-09-02",
+  },
 ];
 
 export default function Admin() {
@@ -20,7 +42,10 @@ export default function Admin() {
 
   return (
     <AppLayout>
-      <PageTitle title="Admin" description="Approve or reject submitted timetables" />
+      <PageTitle
+        title="Admin"
+        description="Approve or reject submitted timetables"
+      />
       <Card>
         <CardContent className="p-0">
           <Table>
@@ -41,8 +66,15 @@ export default function Admin() {
                   <TableCell>{it.title}</TableCell>
                   <TableCell>{it.submittedAt}</TableCell>
                   <TableCell className="text-right space-x-2">
-                    <Button variant="secondary" onClick={() => act(it.id, "reject")}>Reject</Button>
-                    <Button onClick={() => act(it.id, "approve")}>Approve</Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => act(it.id, "reject")}
+                    >
+                      Reject
+                    </Button>
+                    <Button onClick={() => act(it.id, "approve")}>
+                      Approve
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

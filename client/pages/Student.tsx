@@ -22,7 +22,11 @@ export default function StudentView() {
         const my = all.filter((s) => s.batch && s.batch.includes(batchId));
         setItems(my);
       } catch (e: any) {
-        toast({ title: "Failed to load timetable", description: e.message ?? String(e), variant: "destructive" });
+        toast({
+          title: "Failed to load timetable",
+          description: e.message ?? String(e),
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
@@ -32,7 +36,11 @@ export default function StudentView() {
   return (
     <AppLayout>
       <PageTitle title="My Timetable" description="Your batch's timetable" />
-      {loading ? <div>Loading...</div> : <TimetableGrid items={items} onChange={setItems} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <TimetableGrid items={items} onChange={setItems} />
+      )}
     </AppLayout>
   );
 }

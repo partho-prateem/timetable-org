@@ -16,9 +16,16 @@ export default function Generate() {
       const res = await runTimetable({ params: {} });
       // expect { candidates: [{ id, items }] }
       setCandidates(res.candidates ?? []);
-      toast({ title: "Generation finished", description: `${(res.candidates ?? []).length} candidates returned` });
+      toast({
+        title: "Generation finished",
+        description: `${(res.candidates ?? []).length} candidates returned`,
+      });
     } catch (e: any) {
-      toast({ title: "Generation failed", description: e.message ?? String(e), variant: "destructive" });
+      toast({
+        title: "Generation failed",
+        description: e.message ?? String(e),
+        variant: "destructive",
+      });
     } finally {
       setRunning(false);
     }
@@ -29,15 +36,24 @@ export default function Generate() {
       await approveTimetable(versionId, selectionId);
       toast({ title: "Approved", description: "Selection approved." });
     } catch (e: any) {
-      toast({ title: "Approve failed", description: e.message ?? String(e), variant: "destructive" });
+      toast({
+        title: "Approve failed",
+        description: e.message ?? String(e),
+        variant: "destructive",
+      });
     }
   };
 
   return (
     <AppLayout>
-      <PageTitle title="Generate Timetables" description="Run generator and preview candidate timetable versions." />
+      <PageTitle
+        title="Generate Timetables"
+        description="Run generator and preview candidate timetable versions."
+      />
       <div className="mb-4">
-        <Button onClick={run} disabled={running}>{running ? "Running..." : "Run generator"}</Button>
+        <Button onClick={run} disabled={running}>
+          {running ? "Running..." : "Run generator"}
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -47,13 +63,19 @@ export default function Generate() {
               <CardTitle>Candidate {c.id}</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-sm text-muted-foreground mb-2">Score: {c.score ?? "-"}</div>
+              <div className="text-sm text-muted-foreground mb-2">
+                Score: {c.score ?? "-"}
+              </div>
               <div className="max-h-48 overflow-auto mb-2">
                 {/* render a textual preview of items */}
-                <pre className="text-xs">{JSON.stringify(c.items?.slice(0, 20) ?? [], null, 2)}</pre>
+                <pre className="text-xs">
+                  {JSON.stringify(c.items?.slice(0, 20) ?? [], null, 2)}
+                </pre>
               </div>
               <div className="flex gap-2">
-                <Button onClick={() => approve(c.versionId ?? c.id, c.id)}>Approve</Button>
+                <Button onClick={() => approve(c.versionId ?? c.id, c.id)}>
+                  Approve
+                </Button>
                 <Button variant="secondary" asChild>
                   <a href={`/timetables/${c.versionId ?? c.id}`}>Open</a>
                 </Button>

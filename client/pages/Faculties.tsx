@@ -1,6 +1,13 @@
 import { AppLayout, PageTitle } from "@/components/layout/AppLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const rows = [
@@ -27,7 +34,14 @@ export default function Faculties() {
                 <TableRow key={r.id}>
                   <TableCell>{r.id}</TableCell>
                   <TableCell className="flex items-center gap-2">
-                    <Avatar className="size-6"><AvatarFallback>{r.name.split(" ").map((s)=>s[0]).join("")}</AvatarFallback></Avatar>
+                    <Avatar className="size-6">
+                      <AvatarFallback>
+                        {r.name
+                          .split(" ")
+                          .map((s) => s[0])
+                          .join("")}
+                      </AvatarFallback>
+                    </Avatar>
                     {r.name}
                   </TableCell>
                 </TableRow>

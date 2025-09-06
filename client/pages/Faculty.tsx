@@ -20,10 +20,16 @@ export default function FacultyView() {
         const all: Session[] = res.items ?? [];
         // user metadata expected to contain email or faculty id
         const facultyId = user?.email ?? user?.id;
-        const my = all.filter((s) => s.faculty && s.faculty.includes(facultyId));
+        const my = all.filter(
+          (s) => s.faculty && s.faculty.includes(facultyId),
+        );
         setItems(my);
       } catch (e: any) {
-        toast({ title: "Failed to load timetable", description: e.message ?? String(e), variant: "destructive" });
+        toast({
+          title: "Failed to load timetable",
+          description: e.message ?? String(e),
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
@@ -32,8 +38,15 @@ export default function FacultyView() {
 
   return (
     <AppLayout>
-      <PageTitle title="Faculty Timetable" description="Your assigned classes" />
-      {loading ? <div>Loading...</div> : <TimetableGrid items={items} onChange={setItems} />}
+      <PageTitle
+        title="Faculty Timetable"
+        description="Your assigned classes"
+      />
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <TimetableGrid items={items} onChange={setItems} />
+      )}
     </AppLayout>
   );
 }

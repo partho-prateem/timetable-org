@@ -20,7 +20,13 @@ export default function TimetableVersion() {
         // Expect backend to return { items: Session[] }
         setItems(data.items ?? []);
       })
-      .catch((e) => toast({ title: "Failed to load timetable", description: e.message ?? String(e), variant: "destructive" }))
+      .catch((e) =>
+        toast({
+          title: "Failed to load timetable",
+          description: e.message ?? String(e),
+          variant: "destructive",
+        }),
+      )
       .finally(() => setLoading(false));
   }, [versionId]);
 
@@ -31,7 +37,11 @@ export default function TimetableVersion() {
       await adjustTimetable(versionId, { items: updated });
       toast({ title: "Saved", description: "Timetable adjustments saved." });
     } catch (e: any) {
-      toast({ title: "Save failed", description: e.message ?? String(e), variant: "destructive" });
+      toast({
+        title: "Save failed",
+        description: e.message ?? String(e),
+        variant: "destructive",
+      });
     }
   };
 
@@ -49,17 +59,28 @@ export default function TimetableVersion() {
         toast({ title: "No suggestions from AI" });
       }
     } catch (e: any) {
-      toast({ title: "AI failed", description: e.message ?? String(e), variant: "destructive" });
+      toast({
+        title: "AI failed",
+        description: e.message ?? String(e),
+        variant: "destructive",
+      });
     }
   };
 
   return (
     <AppLayout>
-      <PageTitle title={`Timetable ${versionId ?? ""}`} description="Drag classes to rearrange; changes are saved to the backend." />
+      <PageTitle
+        title={`Timetable ${versionId ?? ""}`}
+        description="Drag classes to rearrange; changes are saved to the backend."
+      />
       <div className="mb-4 flex gap-3">
         <Button onClick={askAI}>Get AI suggestions</Button>
       </div>
-      {loading ? <div>Loading...</div> : <TimetableGrid items={items} onChange={onChange} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <TimetableGrid items={items} onChange={onChange} />
+      )}
     </AppLayout>
   );
 }
