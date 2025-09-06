@@ -60,19 +60,27 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <SidebarGroupLabel>Navigation</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {nav.map((n) => (
-                  <SidebarMenuItem key={n.to}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={location.pathname.startsWith(n.to)}
-                    >
-                      <NavLink to={n.to} className="flex items-center gap-2">
-                        <n.icon className="size-4" />
-                        <span>{n.label}</span>
-                      </NavLink>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
+                {(() => {
+                  const role = user?.user_metadata?.role ?? user?.app_metadata?.role ?? (user as any)?.role ?? null;
+                  return nav
+                    .filter((n) => {
+                      if (n.to === "/admin") return role === "Admin";
+                      return true;
+                    })
+                    .map((n) => (
+                      <SidebarMenuItem key={n.to}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={location.pathname.startsWith(n.to)}
+                        >
+                          <NavLink to={n.to} className="flex items-center gap-2">
+                            <n.icon className="size-4" />
+                            <span>{n.label}</span>
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ));
+                })()}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
