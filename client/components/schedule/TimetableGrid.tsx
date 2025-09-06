@@ -41,6 +41,30 @@ export function detectConflicts(items: Session[]) {
   return conflicted;
 }
 
+export function getConflictPairs(items: Session[]) {
+  const pairs: { aId: string; bId: string; reasons: string[] }[] = [];
+  for (let i = 0; i < items.length; i++) {
+    for (let j = i + 1; j < items.length; j++) {
+      const a = items[i];
+      const b = items[j];
+      if (a.day !== b.day) continue;
+      const aStart = a.hour;
+      const aEnd = a.hour + Math.max(1, a.duration);
+      const bStart = b.hour;
+      const bEnd = b.hour + Math.max(1, b.duration);
+      const overlap = aStart < bEnd && bStart < aEnd;
+      const reasons: string[] = [];
+      if (a.batch === b.batch) reasons.push("batch");
+      if (a.faculty === b.faculty) reasons.push("faculty");
+      if (a.room === b.room) reasons.push("room");
+      if (overlap && reasons.length > 0) {
+        pairs.push({ aId: a.id, bId: b.id, reasons });
+      }
+    }
+  }
+  return pairs;
+}
+
 export function TimetableGrid({ items, onChange }: { items: Session[]; onChange: (updated: Session[]) => void }) {
   const [activeId, setActiveId] = useState<string | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
