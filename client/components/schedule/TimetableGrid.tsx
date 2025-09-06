@@ -104,18 +104,18 @@ export function TimetableGrid({ items, onChange, changedIds }: { items: Session[
   );
 }
 
-function Row({ hour, items, conflicts }: { hour: number; items: Session[]; conflicts: Set<string> }) {
+function Row({ hour, items, conflicts, changedIds }: { hour: number; items: Session[]; conflicts: Set<string>; changedIds?: Set<string> }) {
   return (
     <>
       <div className="border-r py-4 pr-2 text-xs text-muted-foreground sticky left-0 bg-background z-[1]">{hour}:00</div>
       {DAYS.map((d) => (
-        <Cell key={`${d}:${hour}`} day={d} hour={hour} items={items} conflicts={conflicts} />
+        <Cell key={`${d}:${hour}`} day={d} hour={hour} items={items} conflicts={conflicts} changedIds={changedIds} />
       ))}
     </>
   );
 }
 
-function Cell({ day, hour, items, conflicts }: { day: Day; hour: number; items: Session[]; conflicts: Set<string> }) {
+function Cell({ day, hour, items, conflicts, changedIds }: { day: Day; hour: number; items: Session[]; conflicts: Set<string>; changedIds?: Set<string> }) {
   const sessions = items.filter((s) => s.day === day && s.hour === hour);
   const { isOver, setNodeRef } = useDroppable({ id: `${day}:${hour}` });
 
@@ -123,7 +123,7 @@ function Cell({ day, hour, items, conflicts }: { day: Day; hour: number; items: 
     <div ref={setNodeRef} id={`${day}:${hour}`} className={cn("border min-h-[72px] relative bg-white/50", isOver && "ring-2 ring-offset-2 ring-indigo-300") }>
       {sessions.map((s) => (
         <Draggable key={s.id} id={s.id}>
-          <SessionCard s={s} conflicted={conflicts.has(s.id)} />
+          <SessionCard s={s} conflicted={conflicts.has(s.id)} changed={changedIds?.has(s.id)} />
         </Draggable>
       ))}
     </div>
