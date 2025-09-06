@@ -87,7 +87,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
         </SidebarContent>
         <SidebarFooter>
           <div className="px-2 text-xs text-muted-foreground">
-            {user?.email ?? "Guest"}
+            <div>{user?.email ?? "Guest"}</div>
+            <div className="text-[11px] text-muted-foreground">Role: {user?.user_metadata?.role ?? user?.app_metadata?.role ?? (user as any)?.role ?? "Unknown"}</div>
           </div>
           <Button
             variant="secondary"
