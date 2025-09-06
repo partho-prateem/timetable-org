@@ -61,7 +61,11 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <SidebarGroupContent>
               <SidebarMenu>
                 {(() => {
-                  const role = user?.user_metadata?.role ?? user?.app_metadata?.role ?? (user as any)?.role ?? null;
+                  const role =
+                    user?.user_metadata?.role ??
+                    user?.app_metadata?.role ??
+                    (user as any)?.role ??
+                    null;
                   return nav
                     .filter((n) => {
                       if (n.to === "/admin") return role === "Admin";
@@ -73,7 +77,10 @@ export function AppLayout({ children }: { children: ReactNode }) {
                           asChild
                           isActive={location.pathname.startsWith(n.to)}
                         >
-                          <NavLink to={n.to} className="flex items-center gap-2">
+                          <NavLink
+                            to={n.to}
+                            className="flex items-center gap-2"
+                          >
                             <n.icon className="size-4" />
                             <span>{n.label}</span>
                           </NavLink>
@@ -88,7 +95,13 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <SidebarFooter>
           <div className="px-2 text-xs text-muted-foreground">
             <div>{user?.email ?? "Guest"}</div>
-            <div className="text-[11px] text-muted-foreground">Role: {user?.user_metadata?.role ?? user?.app_metadata?.role ?? (user as any)?.role ?? "Unknown"}</div>
+            <div className="text-[11px] text-muted-foreground">
+              Role:{" "}
+              {user?.user_metadata?.role ??
+                user?.app_metadata?.role ??
+                (user as any)?.role ??
+                "Unknown"}
+            </div>
           </div>
           <Button
             variant="secondary"
