@@ -1,8 +1,8 @@
 import { AppLayout, PageTitle } from "@/components/layout/AppLayout";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
-import { Session, TimetableGrid } from "@/components/schedule/TimetableGrid";
+import { useMemo, useState } from "react";
+import { Session, TimetableGrid, detectConflicts } from "@/components/schedule/TimetableGrid";
 import { useToast } from "@/hooks/use-toast";
 
 const initial: Session[] = [
@@ -11,10 +11,26 @@ const initial: Session[] = [
   { id: "s3", title: "Databases", color: "#22c55e", day: "Wed", hour: 11, duration: 2, batch: "2025-ECE-A", faculty: "Dr. Díaz", room: "LAB-3" },
 ];
 
+function findNextFreeSlot(items: Session[], forSession: Session) {
+  const days = ["Mon","Tue","Wed","Thu","Fri"] as Session["day"][];
+  // try same day next hours
+  const occupied = new Set(items.filter(it=>it.id!==forSession.id).map(it=>`${it.day}:${it.hour}`));
+  for (let h = forSession.hour + 1; h <= 17; h++) {
+    if (!occupied.has(`${forSession.day}:${h}`)) return { day: forSession.day, hour: h };
+  }
+  // try other days same hour
+  for (const d of days) {
+    if (!occupied.has(`${d}:${forSession.hour}`)) return { day: d, hour: forSession.hour };
+  }
+  // fallback: same
+  return { day: forSession.day, hour: forSession.hour };
+}
+
 export default function Timetables() {
   const [items, setItems] = useState<Session[]>(initial);
   const [viewBy, setViewBy] = useState<"batch" | "faculty" | "room">("batch");
   const { toast } = useToast();
+  const conflicts = useMemo(()=>detectConflicts(items), [items]);
 
   const requestSuggestions = async () => {
     try {
@@ -32,6 +48,20 @@ export default function Timetables() {
     }
   };
 
+  const autoResolve = () => {
+    let updated = [...items];
+    const conflicted = Array.from(detectConflicts(updated));
+    conflicted.forEach((id)=>{
+      const idx = updated.findIndex(x=>x.id===id);
+      if (idx===-1) return;
+      const s = updated[idx];
+      const next = findNextFreeSlot(updated, s);
+      updated[idx] = { ...s, day: next.day as any, hour: next.hour };
+    });
+    setItems(updated);
+    toast({ title: "Auto-resolve applied", description: "Attempted to move conflicting sessions to free slots." });
+  };
+
   return (
     <AppLayout>
       <PageTitle title="Timetables" description="Drag-and-drop to rearrange. Use AI to suggest improvements." />
@@ -45,6 +75,8 @@ export default function Timetables() {
           </SelectContent>
         </Select>
         <Button onClick={requestSuggestions}>Suggest rearrangement (AI)</Button>
+        <Button variant="secondary" onClick={autoResolve} disabled={conflicts.size===0}>Auto-resolve conflicts</Button>
+        {conflicts.size>0 && <div className="ml-auto text-sm text-red-600">{conflicts.size} conflict(s)</div>}
       </div>
       <TimetableGrid items={items} onChange={setItems} />
     </AppLayout>
