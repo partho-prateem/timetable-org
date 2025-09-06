@@ -56,6 +56,7 @@ const App = () => (
             <Route path="/timetables" element={<Protected><Timetables /></Protected>} />
             <Route path="/timetables/:versionId" element={<Protected><TimetableVersion /></Protected>} />
             <Route path="/timetables/compare" element={<Protected><Compare /></Protected>} />
+            <Route path="/compare" element={<Protected><Compare /></Protected>} />
             <Route path="/generate" element={<Protected roles={["Admin","Reviewer"]}><Generate /></Protected>} />
             <Route path="/faculty" element={<Protected roles={["Faculty"]}><FacultyView /></Protected>} />
             <Route path="/student" element={<Protected roles={["Student"]}><StudentView /></Protected>} />
