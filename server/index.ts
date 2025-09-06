@@ -20,7 +20,10 @@ export function createServer() {
   app.get("/api/demo", handleDemo);
 
   // AI suggestions
-  app.post("/api/ai/suggest", (await import("./routes/ai-suggest")).aiSuggest);
+  app.post("/api/ai/suggest", async (req, res, next) => {
+    const mod = await import("./routes/ai-suggest");
+    return mod.aiSuggest(req, res, next as any);
+  });
 
   return app;
 }
