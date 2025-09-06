@@ -140,9 +140,14 @@ function Draggable({ id, children }: { id: string; children: React.ReactNode }) 
   );
 }
 
-function SessionCard({ s, dragging, conflicted }: { s: Session; dragging?: boolean; conflicted?: boolean }) {
+function SessionCard({ s, dragging, conflicted, changed }: { s: Session; dragging?: boolean; conflicted?: boolean; changed?: boolean }) {
   return (
-    <div className={cn("rounded-md p-3 text-xs text-white shadow-md border", conflicted ? "border-red-600/80" : "border-transparent", dragging ? "opacity-95 scale-105" : "")}
+    <div className={cn(
+      "rounded-md p-3 text-xs text-white shadow-md border transition-transform",
+      conflicted ? "border-red-600/80" : "border-transparent",
+      changed ? "ring-2 ring-offset-2 ring-yellow-300" : "",
+      dragging ? "opacity-95 scale-105" : ""
+    )}
       style={{ background: s.color }}>
       <div className="font-medium text-sm leading-tight">{s.title}</div>
       <div className="opacity-90 text-[12px]">{s.batch} • {s.room}</div>
